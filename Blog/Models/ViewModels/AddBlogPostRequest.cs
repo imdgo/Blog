@@ -1,12 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Reflection.Metadata.Ecma335;
-using Blog.Models;
+﻿using Blog.Web.Models.Domain;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace Blog.Web.Models.Domain
+namespace Blog.Web.Models.ViewModels
 {
-    public class BlogPosts
+    public class AddBlogPostRequest
     {
-        public Guid Id { get; set; }
         public string Heading { get; set; }
         public string PageTitle { get; set; }
         public string Content { get; set; }
@@ -16,6 +14,8 @@ namespace Blog.Web.Models.Domain
         public DateTime PublishDate { get; set; }
         public string Author { get; set; }
         public bool Visible { get; set; }
-        public ICollection<Tag> Tags { get; set; }
+
+        public IEnumerable<SelectListItem> Tags { get; set; }
+        public string[] SelectedTags { get; set; } = Array.Empty<string>();
     }
 }

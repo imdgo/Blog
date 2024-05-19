@@ -17,11 +17,14 @@ namespace Blog
 
             builder.Services.AddDbContext<BlogDbContext>(options => 
             options.UseSqlServer(builder.Configuration.GetConnectionString("BlogDBConectionString")));
-
-            builder.Services.AddScoped<ITagRepository, TagRepository>();
-
+            
             builder.Services.AddDbContext<AuthDbContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("AuthDBConectionString")));
+
+
+            builder.Services.AddScoped<ITagRepository, TagRepository>();
+            builder.Services.AddScoped<IBlogPostRepository, BlogPostRepository>();
+
 
             builder.Services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<AuthDbContext>();
