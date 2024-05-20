@@ -38,7 +38,7 @@ namespace Blog.Web.Repositories
 
         public async Task<IEnumerable<Tag>> GetAllAsync()
         {
-            return await _blogDbContext.Tags.ToArrayAsync();
+            return await _blogDbContext.Tags.ToListAsync();
         }
 
         public Task<Tag?> GetAsync(Guid id)
