@@ -6,6 +6,7 @@ namespace Blog.Web.Repositories.Interface
     {
         Task<IEnumerable<BlogPost>> GetAllPostsAsync();
         Task<BlogPost?> GetAsync(Guid id);
+        Task<BlogPost?> GetByUrlHandleAsync(string urlHandle);
         Task<BlogPost> AddAsync(BlogPost post);
         Task<BlogPost?>UpdateAsync(BlogPost post);
         Task<BlogPost?> DeleteAsync(Guid id);
