@@ -67,5 +67,14 @@ namespace Blog.Web.Controllers
 
             return RedirectToAction("Add");
         }
+
+
+        [HttpGet]
+        public async Task<IActionResult> List()
+        {
+            var blogPosts = await blogPostRepository.GetAllPostsAsync();
+
+            return View(blogPosts);
+        }
     }
 }
