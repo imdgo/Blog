@@ -16,10 +16,10 @@ namespace Blog
             builder.Services.AddControllersWithViews();
 
             builder.Services.AddDbContext<BlogDbContext>(options => 
-            options.UseSqlServer(builder.Configuration.GetConnectionString("BlogDBConectionString")));
+            options.UseSqlServer(builder.Configuration.GetConnectionString("BlogDBConnectionString")));
             
             builder.Services.AddDbContext<AuthDbContext>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("AuthDBConectionString")));
+            options.UseSqlServer(builder.Configuration.GetConnectionString("BlogAuthDBConnectionString")));
 
 
             builder.Services.AddScoped<ITagRepository, TagRepository>();
