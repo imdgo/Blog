@@ -53,6 +53,20 @@ namespace Blog.Web.Controllers
                     }
                 }
 
+                var blogCommnentsDomainModel = await blogPostCommentRepository.GetCommentsByBlogIdAsync(blogPost.Id);
+                
+                var blogCommentsForView = new List<BlogComment>();
+
+                foreach (var blogComment in blogCommnentsDomainModel)
+                {
+                    blogCommentsForView.Add(new BlogComment
+                    {
+                        Description = blogComment.Description,
+                        DateAdded = blogComment.DateAdded,
+                        Username = (await userManager.FindByIdAsync(blogComment.UserId.ToString())).UserName
+                    });
+                }
+
                 blogDetailsViewModel = new BlogDetailsViewModel
                 {
                     Id = blogPost.Id,
@@ -67,7 +81,8 @@ namespace Blog.Web.Controllers
                     Visible = blogPost.Visible,
                     Tags = blogPost.Tags,
                     TotalLikes = totalLikes,
-                    Liked = liked
+                    Liked = liked,
+                    Comments = blogCommentsForView
                 };
             }
 
@@ -88,11 +103,14 @@ namespace Blog.Web.Controllers
                 };
 
                 await blogPostCommentRepository.AddAsync(domainModel);
-                return RedirectToAction("Index", "Home",
+
+                return RedirectToAction("Index", "Blogs",
                     new { urlHandle = blogDetailsViewModel.UrlHandle });
             }
 
             return View();
         }
+
+
     }
 }
