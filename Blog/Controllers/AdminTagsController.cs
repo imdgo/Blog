@@ -28,15 +28,21 @@ namespace Blog.Web.Controllers
         [ActionName("Add")]
         public async Task<IActionResult> Add(AddTagRequest addTagRequest)
         {
-            var tag = new Tag 
-            { 
-                Name = addTagRequest.Name, 
-                DisplayName = addTagRequest.DisplayName 
-            };
 
-            await tagRepository.AddAsync(tag);
+            if (ModelState.IsValid)
+            {
+                var tag = new Tag
+                {
+                    Name = addTagRequest.Name,
+                    DisplayName = addTagRequest.DisplayName
+                };
 
-            return RedirectToAction("List");
+                await tagRepository.AddAsync(tag);
+
+                return RedirectToAction("List");
+            }
+
+            return View();
         }
 
         [HttpGet]
