@@ -1,5 +1,6 @@
 ﻿using Blog.Models;
 using Blog.Web.Models.ViewModels;
+using Blog.Web.Repositories;
 using Blog.Web.Repositories.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -73,6 +74,24 @@ namespace Blog.Web.Controllers
                     {
                         return RedirectToAction("List", "AdminUsers");
                     }
+                }
+            }
+
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+
+            var user = await userManager.FindByIdAsync(id.ToString());
+            if (user != null) 
+            {
+                var identityResult = await userManager.DeleteAsync(user);
+
+                if (identityResult is not null && identityResult.Succeeded)
+                {
+                    return RedirectToAction("List", "AdminUsers");
                 }
             }
 
