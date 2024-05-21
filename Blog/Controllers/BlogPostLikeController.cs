@@ -31,5 +31,14 @@ namespace Blog.Web.Controllers
 
             return Ok();
         }
+
+        [HttpGet]
+        [Route("{blogPostId:guid}")]
+        public async Task<IActionResult> GetTotalLikesForBlog([FromRoute] Guid blogPostId)
+        {
+            var totalLikes = await blogPostLikeRepository.GetTotalLikes(blogPostId);
+
+            return Ok(totalLikes);
+        }
     }
 }
