@@ -64,10 +64,11 @@ namespace Blog.Web.Controllers
             var signInResult = await signInManager.PasswordSignInAsync(loginViewModel.Username, loginViewModel.Password, false, false);
             if (signInResult != null && signInResult.Succeeded)
             {
-                if (string.IsNullOrEmpty(loginViewModel.ReturnUrl))
+                if (!string.IsNullOrWhiteSpace(loginViewModel.ReturnUrl))
                 {
-                    return RedirectToPage(loginViewModel.ReturnUrl);
+                    return Redirect(loginViewModel.ReturnUrl);
                 }
+
                 return RedirectToAction("Index", "Home");
             }
 
