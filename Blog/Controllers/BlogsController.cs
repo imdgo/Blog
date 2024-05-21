@@ -1,5 +1,8 @@
-﻿using Blog.Web.Models.ViewModels;
+﻿using Blog.Web.Models.Domain;
+using Blog.Web.Models.ViewModels;
+using Blog.Web.Repositories;
 using Blog.Web.Repositories.Interface;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,16 +12,19 @@ namespace Blog.Web.Controllers
     {
         private readonly IBlogPostRepository blogPostRepository;
         private readonly IBlogPostLikeRepository blogPostLikeRepository;
+        private readonly IBlogPostCommentRepository blogPostCommentRepository;
         private readonly SignInManager<IdentityUser> signInManager;
         private readonly UserManager<IdentityUser> userManager;
 
         public BlogsController(IBlogPostRepository blogPostRepository, 
             IBlogPostLikeRepository blogPostLikeRepository,
+            IBlogPostCommentRepository blogPostCommentRepository,
             SignInManager<IdentityUser> signInManager,
             UserManager<IdentityUser> userManager)
         {
             this.blogPostRepository = blogPostRepository;
             this.blogPostLikeRepository = blogPostLikeRepository;
+            this.blogPostCommentRepository = blogPostCommentRepository;
             this.signInManager = signInManager;
             this.userManager = userManager;
         }
@@ -66,6 +72,27 @@ namespace Blog.Web.Controllers
             }
 
             return View(blogDetailsViewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Index(BlogDetailsViewModel blogDetailsViewModel)
+        {
+            if (signInManager.IsSignedIn(User))
+            {
+                var domainModel = new BlogPostComment
+                {
+                    BlogPostId = blogDetailsViewModel.Id,
+                    Description = blogDetailsViewModel.CommentDescription,
+                    UserId = Guid.Parse(userManager.GetUserId(User)),
+                    DateAdded = DateTime.Now
+                };
+
+                await blogPostCommentRepository.AddAsync(domainModel);
+                return RedirectToAction("Index", "Home",
+                    new { urlHandle = blogDetailsViewModel.UrlHandle });
+            }
+
+            return View();
         }
     }
 }
