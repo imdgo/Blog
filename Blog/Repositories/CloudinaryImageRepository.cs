@@ -32,7 +32,7 @@ namespace Blog.Web.Repositories
 
             if (uploadResult != null && uploadResult.StatusCode == HttpStatusCode.OK)
             {
-                return uploadResult.SecureUri.ToString();
+                return uploadResult.SecureUrl.ToString();
             }
 
             return null;
